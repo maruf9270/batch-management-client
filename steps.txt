@@ -1,0 +1,5 @@
+There should be two roles of users. They are admin, teacher.
+1.admin
+2.teacher
+
+Letter to be added on student
