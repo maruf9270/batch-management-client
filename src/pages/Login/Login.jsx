@@ -61,8 +61,13 @@ const Login = () => {
   const handelsubmit = (e) => {
     e.preventDefault();
     const form = e.target;
+   
     if(!emailerror||!passwordError){
         toast.error("Please input email and password")
+        return
+    }
+    if(state.password === "" || state.email === ""){
+        toast.error("Input email and password")
         return
     }
 
