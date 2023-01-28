@@ -1,0 +1,6 @@
+@keyframes spinner {
+    to {transform: rotate(360deg);}
+  }
+  .spinner {
+    animation: spinner 2s linear infinite;
+  }
