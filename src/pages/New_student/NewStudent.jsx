@@ -18,8 +18,11 @@ const NewStudent = () => {
   return (
     <div>
       <h1 className="text-3xl text-center">
-        This is the page for adding new studnets
+       Sikander Computer Training Center 
       </h1>
+      <h2 className="text-2xl text-center rounded-lg" >
+      Register
+      </h2>
 
       {/* Main form section starts from here */}
       <div className="w-full">

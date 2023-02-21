@@ -1,84 +1,106 @@
 import { Button, TextField } from "@mui/material";
-import { Box, margin } from "@mui/system";
-import React, { useReducer, useState } from "react";
+import { Box} from "@mui/system";
+import React from "react";
 import { Helmet } from "react-helmet";
-import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { email, password } from "../../Redux/Reducers/LoginReducer/Actions/Actions";
+import { LoginSubmit } from "../../Redux/Thunk/Login/Login";
 
 const Login = () => {
-  // Error condition for email section
-  const [emailerror, setemailerror] = useState(false);
 
-  // Error conditio for password section;
-  const [passwordError, setpasswordError] = useState(false);
+  // const states = useSelector((state) => state);
+  // console.log(state);
+  // // Error condition for email section
+  // const [emailerror, setemailerror] = useState(false);
 
-  // Loading state for login page
-  const [loginLoading, setLoginLoading] = useState(false);
-  // Initial vlaue of user
-  const initialValue = {
-    email: "",
-    password: "",
-  };
+  // // Error conditio for password section;
+  // const [passwordError, setpasswordError] = useState(false);
 
-  // Reducer function
-  const reducer = (state, action) => {
-    if (action.type === "email") {
-      if (action.payload === "") {
-        setemailerror(true);
-        setLoginLoading(false);
-        return state;
-      } else {
-        setemailerror(false);
-        state.email = action.payload;
-        return state;
-      }
+  // // Loading state for login page
+  // const [loginLoading, setLoginLoading] = useState(false);
+  // // Initial vlaue of user
+  // const initialValue = {
+  //   email: "",
+  //   password: "",
+  // };
+
+  // // Reducer function
+  // const reducer = (state, action) => {
+  //   if (action.type === "email") {
+  //     if (action.payload === "") {
+  //       setemailerror(true);
+  //       setLoginLoading(false);
+  //       return state;
+  //     } else {
+  //       setemailerror(false);
+  //       state.email = action.payload;
+  //       return state;
+  //     }
+  //   }
+  //   if (action.type === "password") {
+  //     if (action.payload === "") {
+  //       setLoginLoading(false);
+  //       setpasswordError(true);
+  //       return state;
+  //     } else {
+  //       setpasswordError(false);
+  //       state["password"] = action.payload;
+  //       return state;
+  //     }
+  //   } else {
+  //     return state;
+  //   }
+  // };
+  // // Reducer function
+  // const [state, dispatch] = useReducer(reducer, initialValue);
+
+  // // Handling submitting form
+  // const handelsubmit = (e) => {
+  //   e.preventDefault();
+  //   const form = e.target;
+
+  //   if (emailerror || passwordError) {
+  //     toast.error("Please input email and password");
+  //     return;
+  //   }
+  //   if (state.password === "" || state.email === "") {
+  //     toast.error("Input email and password");
+  //     return;
+  //   } else {
+  //     toast.success("working");
+  //   }
+  // };
+
+  const dispatch = useDispatch()
+  const LoginReducer = useSelector((state)=>state.LoginReducer);
+  const email_error = LoginReducer.email_error;
+  const password_error = LoginReducer.password_error;
+
+  const submit = (e) =>{
+    e.preventDefault()
+    if(!email_error && !password_error){
+      dispatch(LoginSubmit())
     }
-    if (action.type === "password") {
-      if (action.payload === "") {
-        setLoginLoading(false);
-        setpasswordError(true);
-        return state;
-      } else {
-        setpasswordError(false);
-        state["password"] = action.payload;
-        return state;
-      }
-    } else {
-      return state;
+    else{
+      return
     }
-  };
-  // Reducer function
-  const [state, dispatch] = useReducer(reducer, initialValue);
-
-  // Handling submitting form
-  const handelsubmit = (e) => {
-    e.preventDefault();
-    const form = e.target;
-
-    if (emailerror || passwordError) {
-      toast.error("Please input email and password");
-      return;
-    }
-    if (state.password === "" || state.email === "") {
-      toast.error("Input email and password");
-      return;
-    } else {
-      toast.success("working");
-    }
-  };
+    
+  }
 
   return (
     <div className="w-[100vw] h-[100vh] flex items-center justify-center">
       <div className="w-[500px] h-[500px] border border-stone-300 rounded-md">
-        <form action="" onSubmit={handelsubmit}>
+        <form action="" onSubmit={submit}>
           <TextField
-            label="Name"
+            label="Email"
             id="outlined-basic"
             name="name"
             sx={{ width: "50ch" }}
-            onBlur={(e) => dispatch({ type: "email", payload: e.target.value })}
-            error={emailerror}
-          ></TextField>
-          {emailerror && (
+            onBlur={(e) => dispatch(email(e.target.value))}
+            error={email_error}
+            required
+            ></TextField>
+          {email_error && (
             <>
               <br />{" "}
               <label htmlFor="Name" className="text-red-700">
@@ -96,11 +118,11 @@ const Login = () => {
             id="outlined-basic"
             sx={{ width: "50ch", mt: 3 }}
             onBlur={(e) =>
-              dispatch({ type: "password", payload: e.target.value })
+             dispatch(password(e.target.value))
             }
-            error={passwordError}
+            error={password_error}
           ></TextField>
-          {passwordError ? (
+          {password_error ? (
             <>
               <br />{" "}
               <label htmlFor="password" className="text-red-700">
@@ -125,6 +147,7 @@ const Login = () => {
               color="success"
               sx={{ px: 6, py: 1 }}
               type="submit"
+              disabled={email_error||password_error}
             >
               Login
             </Button>
