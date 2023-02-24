@@ -1,90 +1,39 @@
 import { Button, TextField } from "@mui/material";
 import { Box} from "@mui/system";
+import { signOut } from "firebase/auth";
 import React from "react";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Bigspinner from "../../components/LoaderSpinner/BigSpinner";
+import SmallSpinner from "../../components/LoaderSpinner/SmallSpinner";
+import { auth } from "../../Redux/Reducers/AuthenticationReducer/AuthenticationReducer";
 import { email, password } from "../../Redux/Reducers/LoginReducer/Actions/Actions";
 import { LoginSubmit } from "../../Redux/Thunk/Login/Login";
 
 const Login = () => {
-
-  // const states = useSelector((state) => state);
-  // console.log(state);
-  // // Error condition for email section
-  // const [emailerror, setemailerror] = useState(false);
-
-  // // Error conditio for password section;
-  // const [passwordError, setpasswordError] = useState(false);
-
-  // // Loading state for login page
-  // const [loginLoading, setLoginLoading] = useState(false);
-  // // Initial vlaue of user
-  // const initialValue = {
-  //   email: "",
-  //   password: "",
-  // };
-
-  // // Reducer function
-  // const reducer = (state, action) => {
-  //   if (action.type === "email") {
-  //     if (action.payload === "") {
-  //       setemailerror(true);
-  //       setLoginLoading(false);
-  //       return state;
-  //     } else {
-  //       setemailerror(false);
-  //       state.email = action.payload;
-  //       return state;
-  //     }
-  //   }
-  //   if (action.type === "password") {
-  //     if (action.payload === "") {
-  //       setLoginLoading(false);
-  //       setpasswordError(true);
-  //       return state;
-  //     } else {
-  //       setpasswordError(false);
-  //       state["password"] = action.payload;
-  //       return state;
-  //     }
-  //   } else {
-  //     return state;
-  //   }
-  // };
-  // // Reducer function
-  // const [state, dispatch] = useReducer(reducer, initialValue);
-
-  // // Handling submitting form
-  // const handelsubmit = (e) => {
-  //   e.preventDefault();
-  //   const form = e.target;
-
-  //   if (emailerror || passwordError) {
-  //     toast.error("Please input email and password");
-  //     return;
-  //   }
-  //   if (state.password === "" || state.email === "") {
-  //     toast.error("Input email and password");
-  //     return;
-  //   } else {
-  //     toast.success("working");
-  //   }
-  // };
-
   const dispatch = useDispatch()
   const LoginReducer = useSelector((state)=>state.LoginReducer);
   const email_error = LoginReducer.email_error;
   const password_error = LoginReducer.password_error;
+  const error_message = LoginReducer.error_message;
+  const loading = LoginReducer.loading
+  const navigate = useNavigate()
 
-  const submit = (e) =>{
-    e.preventDefault()
-    if(!email_error && !password_error){
-      dispatch(LoginSubmit())
+  // User reducer
+  const AuthenticationReducer = useSelector((state)=>state.AuthenticationReducer)
+  const userLoading = AuthenticationReducer.loading
+  const user = AuthenticationReducer.user
+
+  function submit(e) {
+    e.preventDefault();
+    if (!email_error && !password_error) {
+      dispatch(LoginSubmit());
     }
-    else{
-      return
+    else {
+      return;
     }
-    
+
   }
 
   return (
@@ -104,7 +53,10 @@ const Login = () => {
             <>
               <br />{" "}
               <label htmlFor="Name" className="text-red-700">
-                Email is required
+                {
+                  error_message ? error_message: "Email is required"
+                }
+               
               </label>{" "}
               <br />
             </>
@@ -126,7 +78,7 @@ const Login = () => {
             <>
               <br />{" "}
               <label htmlFor="password" className="text-red-700">
-                This field is required
+                {error_message ? error_message : "This field is required"}
               </label>{" "}
               <br />
             </>
@@ -149,11 +101,28 @@ const Login = () => {
               type="submit"
               disabled={email_error||password_error}
             >
-              Login
+             {
+              loading ? <SmallSpinner/> : "Login"
+             }
+            </Button>
+            <Button
+              variant="outlined"
+              color="success"
+              sx={{ px: 6, py: 1 }}
+             onClick={()=>signOut(auth)}
+              disabled={email_error||password_error}
+            >
+              Logout
             </Button>
           </Box>
         </form>
       </div>
+
+      {/* Redirecting user if they logged in  */}
+
+      {
+        loading || userLoading ? <Bigspinner></Bigspinner> : (user ? navigate('/'):"")
+      }
 
       {/* HElmet section for page title */}
       <Helmet>

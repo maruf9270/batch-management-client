@@ -22,10 +22,10 @@ export const submit = () =>{
     }
 }
 
-export const loginSuccess = ( ) =>{
+export const loginSuccess = (res) =>{
     return{
         type:LOGIN_SUCCESS,
-        payload:""
+        payload:res
     }
 } 
 

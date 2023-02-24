@@ -53,7 +53,10 @@ export const LoginReducer = (state = initialState, action) =>{
         case LOGIN_SUCCESS:
             return{
                 ...state,
-                loading:false
+                loading:false,
+                email_error:false,
+                password_error:false
+
             }
 
         // Login loginFaild
@@ -61,8 +64,8 @@ export const LoginReducer = (state = initialState, action) =>{
             return{
                 ...state,
                 loading: false,
-                email_error:false,
-                password_error:false,
+                email_error:true,
+                password_error:true,
                 error_message:action.payload
 
             }

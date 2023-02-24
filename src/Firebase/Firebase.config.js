@@ -9,7 +9,7 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 
-const firebaseConfig = {
+export const firebaseConfig = {
 
   apiKey: process.env.REACT_APP_apiKey,
 
