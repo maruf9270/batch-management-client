@@ -117,13 +117,6 @@ const Login = () => {
           </Box>
         </form>
       </div>
-
-      {/* Redirecting user if they logged in  */}
-
-      {
-        loading || userLoading ? <Bigspinner></Bigspinner> : (user ? navigate('/'):"")
-      }
-
       {/* HElmet section for page title */}
       <Helmet>
         <title>Login</title>

@@ -16,7 +16,6 @@ export const LoginSubmit = () =>{
                 toast.success("Logged in successfully")
                 if(res.user.uid){
                 
-
                 }
             }
         })

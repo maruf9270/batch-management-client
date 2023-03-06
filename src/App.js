@@ -15,7 +15,7 @@ function App() {
   // This is for user info change on firebase
   const dispatch = useDispatch();
   useEffect(()=>{
-    dispatch(getting_user)
+    dispatch(getting_user())
     const unsubscribe = onAuthStateChanged(auth,(user)=>{
         const current_user = user;
         dispatch(found_user(current_user))

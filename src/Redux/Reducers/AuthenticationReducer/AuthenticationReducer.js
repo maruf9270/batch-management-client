@@ -7,7 +7,7 @@ import { FOUND_USER, GETTING_USER } from './ActionTypes/ActionTypes'
 export const auth = getAuth(app)
 const initialState ={
     user:'',
-    loading:false
+    loading:true
 }
 export const AuthenticationReducer = (state = initialState,action) =>{
   

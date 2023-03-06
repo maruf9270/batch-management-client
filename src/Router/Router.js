@@ -4,6 +4,7 @@ import Homepage from "../pages/Homepage/Homepage";
 import Login from "../pages/Login/Login";
 import NewStudent from "../pages/New_student/NewStudent";
 import SiginUp from "../pages/Sign-up/SiginUp";
+import ProtectedFromLoggedIn from "../ProtectedRoute/ProtectedFromLoggedIn";
 
 const router = createBrowserRouter([
     {
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
             },
             {
                 path:'/login'
-                ,element:<Login></Login>
+                ,element:<ProtectedFromLoggedIn><Login></Login></ProtectedFromLoggedIn>
             }
         ]
     }
